@@ -193,20 +193,117 @@ class FallingFace:
         self.y = -face_img.shape[0]  # 从顶部开始
         self.width = face_img.shape[1]
         self.height = face_img.shape[0]
-        self.speed = face_detection_settings['falling_speed']
+        
+        # 物理属性
+        self.velocity_y = 0  # 垂直速度
+        self.gravity = 0.5  # 重力加速度
+        self.bounce_factor = 0.3  # 弹跳系数
+        self.friction = 0.95  # 摩擦力
+        self.is_on_ground = False
+        
+        # 随机水平速度
+        import random
+        self.velocity_x = random.uniform(-1, 1)
+        
         self.frame_width = frame_width
         self.frame_height = frame_height
         self.rotation = 0
-        import random
-        self.rotation_speed = random.uniform(-2, 2)  # 随机旋转速度
+        self.rotation_speed = random.uniform(-2, 2)
         
-    def update(self):
-        self.y += self.speed
+        # 生存时间（10秒）
+        import time
+        self.birth_time = time.time()
+        self.lifetime = 10.0  # 10秒后消失
+        
+    def update(self, other_faces=None):
+        import time
+        current_time = time.time()
+        
+        # 检查是否超时
+        if current_time - self.birth_time > self.lifetime:
+            return False
+        
+        # 如果other_faces是None，设为空列表
+        if other_faces is None:
+            other_faces = []
+        
+        # 物理更新
+        if not self.is_on_ground:
+            # 应用重力
+            self.velocity_y += self.gravity
+            
+            # 更新位置
+            self.y += self.velocity_y
+            self.x += self.velocity_x
+            
+            # 检查是否触地或撞到其他人脸
+            ground_level = self.frame_height - self.height
+            collision_level = ground_level
+            
+            # 简化的垂直堆叠检测
+            if other_faces and len(other_faces) > 0:
+                for other_face in other_faces:
+                    if (other_face != self and 
+                        hasattr(other_face, 'is_on_ground') and other_face.is_on_ground and
+                        hasattr(other_face, 'x') and hasattr(other_face, 'y') and
+                        hasattr(other_face, 'width') and hasattr(other_face, 'height')):
+                        
+                        # 检查水平重叠
+                        if (abs(self.x - other_face.x) < (self.width + other_face.width) / 2):
+                            # 计算可以停留的位置
+                            possible_landing = other_face.y - self.height
+                            if possible_landing >= 0 and possible_landing < collision_level:
+                                collision_level = possible_landing
+            
+            if self.y >= collision_level:
+                self.y = collision_level
+                
+                # 弹跳效果
+                if abs(self.velocity_y) > 2:  # 只有速度够大才弹跳
+                    self.velocity_y = -self.velocity_y * self.bounce_factor
+                    self.velocity_x *= self.friction
+                else:
+                    # 速度太小，停下来
+                    self.velocity_y = 0
+                    self.velocity_x *= 0.8  # 摩擦
+                    self.is_on_ground = True
+            
+            # 检查左右边界
+            if self.x - self.width//2 <= 0:
+                self.x = self.width//2
+                self.velocity_x = -self.velocity_x * 0.7
+            elif self.x + self.width//2 >= self.frame_width:
+                self.x = self.frame_width - self.width//2
+                self.velocity_x = -self.velocity_x * 0.7
+        else:
+            # 在停止状态时的物理处理
+            # 地面上的微小摆动
+            if abs(self.velocity_x) > 0.1:
+                self.x += self.velocity_x
+                self.velocity_x *= 0.95  # 逐渐减速
+        
+        # 旋转更新（在地面上时旋转变慢）
+        if self.is_on_ground:
+            self.rotation_speed *= 0.98
         self.rotation += self.rotation_speed
-        return self.y < self.frame_height + 50  # 超出屏幕下方50像素就删除
+        
+        return True
     
     def get_position(self):
         return int(self.x - self.width//2), int(self.y), int(self.width), int(self.height)
+    
+    def get_age(self):
+        import time
+        return time.time() - self.birth_time
+    
+    def check_horizontal_overlap(self, other_face, tolerance=5):
+        """检查两个人脸是否在水平方向上重叠"""
+        self_left = self.x - self.width // 2 - tolerance
+        self_right = self.x + self.width // 2 + tolerance
+        other_left = other_face.x - other_face.width // 2
+        other_right = other_face.x + other_face.width // 2
+        
+        return not (self_right <= other_left or self_left >= other_right)
 
 # 增强的人脸检测回调函数（带掉落效果）
 def face_detection_callback(frame):
@@ -239,14 +336,18 @@ def face_detection_callback(frame):
             
             # 绘制人脸框并捕获人脸（每1秒一次）
             if faces is not None and len(faces) > 0:
-                for (x, y, w, h) in faces:
+                # 记录是否在这一帧中创建了新的掉落人脸
+                faces_captured_this_frame = False
+                
+                for i, (x, y, w, h) in enumerate(faces):
                     # 绘制检测框
                     cv2.rectangle(img, (x, y), (x + w, y + h), face_detection_settings['color'], 2)
-                    cv2.putText(img, 'Face', (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, face_detection_settings['color'], 1)
+                    cv2.putText(img, f'Face {i+1}', (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, face_detection_settings['color'], 1)
                     
-                    # 每1秒捕获一次人脸用于掉落效果
+                    # 每1秒捕获一次人脸用于掉落效果（支持多人脸）
                     if (face_detection_settings['falling_effect'] and 
-                        current_time - last_face_capture_time > 1.0):
+                        current_time - last_face_capture_time > 1.0 and 
+                        not faces_captured_this_frame):
                         
                         # 提取人脸区域
                         face_roi = img[y:y+h, x:x+w].copy()
@@ -256,7 +357,7 @@ def face_detection_callback(frame):
                         if face_size > 20:  # 最小20像素
                             face_roi_resized = cv2.resize(face_roi, (face_size, face_size))
                             
-                            # 创建新的掉落人脸对象
+                            # 为每个检测到的人脸创建掉落对象
                             new_falling_face = FallingFace(
                                 face_roi_resized, 
                                 x, 
@@ -264,13 +365,18 @@ def face_detection_callback(frame):
                                 frame_height
                             )
                             falling_faces.append(new_falling_face)
-                            
-                            # 限制同时掉落的人脸数量
-                            if len(falling_faces) > 10:
-                                falling_faces = falling_faces[-10:]
-                        
-                        last_face_capture_time = current_time
-                        break  # 只处理第一个检测到的人脸
+                
+                # 每1秒只处理一次，但会处理当前帧的所有人脸
+                if (face_detection_settings['falling_effect'] and 
+                    current_time - last_face_capture_time > 1.0 and 
+                    len(faces) > 0):
+                    
+                    faces_captured_this_frame = True
+                    last_face_capture_time = current_time
+                    
+                    # 限制同时掉落的人脸数量
+                    if len(falling_faces) > 15:
+                        falling_faces = falling_faces[-15:]
         
         except Exception as e:
             # 如果检测失败，至少返回原图像
@@ -279,10 +385,12 @@ def face_detection_callback(frame):
     # 更新和绘制掉落的人脸
     if face_detection_settings['falling_effect']:
         try:
-            # 更新掉落人脸位置
+            # 更新掉落人脸位置（传入其他人脸用于碰撞检测）
             active_faces = []
             for falling_face in falling_faces:
-                if falling_face.update():  # 如果还在屏幕内
+                # 传入其他人脸进行堆叠检测
+                other_faces = [f for f in falling_faces if f != falling_face]
+                if falling_face.update(other_faces):  # 如果还活着
                     active_faces.append(falling_face)
                     
                     # 在图像上绘制掉落的人脸
@@ -294,10 +402,22 @@ def face_detection_callback(frame):
                         fy + fh <= frame_height):
                         
                         # 简单地叠加人脸图像（不做旋转，保持性能）
-                        img[fy:fy+fh, fx:fx+fw] = falling_face.face_img
-                        
-                        # 可选：添加一个透明边框效果
-                        cv2.rectangle(img, (fx-1, fy-1), (fx+fw+1, fy+fh+1), (255, 255, 255), 1)
+                        try:
+                            img[fy:fy+fh, fx:fx+fw] = falling_face.face_img
+                            
+                            # 添加一个半透明边框效果表示年龄
+                            age = falling_face.get_age()
+                            alpha = max(0.3, 1.0 - age / 10.0)  # 随时间变透明
+                            border_color = (int(255 * alpha), int(255 * alpha), int(255 * alpha))
+                            cv2.rectangle(img, (fx-1, fy-1), (fx+fw+1, fy+fh+1), border_color, 1)
+                            
+                            # 显示剩余时间
+                            remaining_time = int(10 - age)
+                            if remaining_time > 0:
+                                cv2.putText(img, f'{remaining_time}s', (fx, fy-5), 
+                                           cv2.FONT_HERSHEY_SIMPLEX, 0.3, border_color, 1)
+                        except:
+                            pass  # 如果绘制失败，跳过这个人脸
             
             falling_faces = active_faces
             
