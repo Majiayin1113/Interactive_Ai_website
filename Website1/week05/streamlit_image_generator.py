@@ -177,12 +177,45 @@ RTC_CONFIGURATION = RTCConfiguration({
 face_detection_settings = {
     'enabled': True,
     'color': (0, 255, 0),
-    'confidence': 0.3
+    'confidence': 0.3,
+    'falling_effect': True,
+    'falling_speed': 3.0
 }
 
-# 简化的人脸检测回调函数
+# 掉落人脸数据结构
+falling_faces = []
+last_face_capture_time = 0
+
+class FallingFace:
+    def __init__(self, face_img, x_start, frame_width, frame_height):
+        self.face_img = face_img
+        self.x = x_start + (face_img.shape[1] // 2)  # 从人脸中心开始
+        self.y = -face_img.shape[0]  # 从顶部开始
+        self.width = face_img.shape[1]
+        self.height = face_img.shape[0]
+        self.speed = face_detection_settings['falling_speed']
+        self.frame_width = frame_width
+        self.frame_height = frame_height
+        self.rotation = 0
+        import random
+        self.rotation_speed = random.uniform(-2, 2)  # 随机旋转速度
+        
+    def update(self):
+        self.y += self.speed
+        self.rotation += self.rotation_speed
+        return self.y < self.frame_height + 50  # 超出屏幕下方50像素就删除
+    
+    def get_position(self):
+        return int(self.x - self.width//2), int(self.y), int(self.width), int(self.height)
+
+# 增强的人脸检测回调函数（带掉落效果）
 def face_detection_callback(frame):
+    global falling_faces, last_face_capture_time
+    import time
+    
     img = frame.to_ndarray(format="bgr24")
+    frame_height, frame_width = img.shape[:2]
+    current_time = time.time()
     
     if face_detection_settings['enabled']:
         try:
@@ -204,13 +237,73 @@ def face_detection_callback(frame):
             except:
                 pass
             
-            # 绘制人脸框
-            for (x, y, w, h) in faces:
-                cv2.rectangle(img, (x, y), (x + w, y + h), face_detection_settings['color'], 2)
-                cv2.putText(img, 'Face', (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, face_detection_settings['color'], 1)
+            # 绘制人脸框并捕获人脸（每1秒一次）
+            if faces is not None and len(faces) > 0:
+                for (x, y, w, h) in faces:
+                    # 绘制检测框
+                    cv2.rectangle(img, (x, y), (x + w, y + h), face_detection_settings['color'], 2)
+                    cv2.putText(img, 'Face', (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, face_detection_settings['color'], 1)
+                    
+                    # 每1秒捕获一次人脸用于掉落效果
+                    if (face_detection_settings['falling_effect'] and 
+                        current_time - last_face_capture_time > 1.0):
+                        
+                        # 提取人脸区域
+                        face_roi = img[y:y+h, x:x+w].copy()
+                        
+                        # 调整人脸大小（变小一点用于掉落）
+                        face_size = min(w, h, 60)  # 最大60像素
+                        if face_size > 20:  # 最小20像素
+                            face_roi_resized = cv2.resize(face_roi, (face_size, face_size))
+                            
+                            # 创建新的掉落人脸对象
+                            new_falling_face = FallingFace(
+                                face_roi_resized, 
+                                x, 
+                                frame_width, 
+                                frame_height
+                            )
+                            falling_faces.append(new_falling_face)
+                            
+                            # 限制同时掉落的人脸数量
+                            if len(falling_faces) > 10:
+                                falling_faces = falling_faces[-10:]
+                        
+                        last_face_capture_time = current_time
+                        break  # 只处理第一个检测到的人脸
+        
         except Exception as e:
             # 如果检测失败，至少返回原图像
             pass
+    
+    # 更新和绘制掉落的人脸
+    if face_detection_settings['falling_effect']:
+        try:
+            # 更新掉落人脸位置
+            active_faces = []
+            for falling_face in falling_faces:
+                if falling_face.update():  # 如果还在屏幕内
+                    active_faces.append(falling_face)
+                    
+                    # 在图像上绘制掉落的人脸
+                    fx, fy, fw, fh = falling_face.get_position()
+                    
+                    # 确保坐标在有效范围内
+                    if (fx >= 0 and fy >= 0 and 
+                        fx + fw <= frame_width and 
+                        fy + fh <= frame_height):
+                        
+                        # 简单地叠加人脸图像（不做旋转，保持性能）
+                        img[fy:fy+fh, fx:fx+fw] = falling_face.face_img
+                        
+                        # 可选：添加一个透明边框效果
+                        cv2.rectangle(img, (fx-1, fy-1), (fx+fw+1, fy+fh+1), (255, 255, 255), 1)
+            
+            falling_faces = active_faces
+            
+        except Exception as e:
+            # 如果掉落效果出错，清空掉落列表
+            falling_faces = []
     
     return av.VideoFrame.from_ndarray(img, format="bgr24")
 
@@ -478,6 +571,13 @@ def camera_page():
             help=get_text('face_detection_help', st.session_state.language) if st.session_state.language == 'zh' else "Enable to mark detected faces in video"
         )
         
+        # 人脸掉落效果开关
+        falling_effect_enabled = st.checkbox(
+            "🎭 人脸掉落效果" if st.session_state.language == 'zh' else "🎭 Face Falling Effect",
+            value=True,
+            help="启用后检测到的人脸会从顶部掉落" if st.session_state.language == 'zh' else "Detected faces will fall from top when enabled"
+        )
+        
         st.markdown("---")
         
         # 检测设置
@@ -508,6 +608,22 @@ def camera_page():
             "Purple": (255, 0, 255)
         }
         detection_color = color_map[color_option]
+        
+        # 掉落效果设置
+        if falling_effect_enabled:
+            st.subheader("🎭 " + ("掉落效果设置" if st.session_state.language == 'zh' else "Falling Effect Settings"))
+            
+            # 掉落速度控制
+            falling_speed = st.slider(
+                "掉落速度" if st.session_state.language == 'zh' else "Falling Speed",
+                min_value=1.0,
+                max_value=10.0,
+                value=3.0,
+                step=0.5,
+                help="调整人脸掉落的速度" if st.session_state.language == 'zh' else "Adjust the speed of falling faces"
+            )
+        else:
+            falling_speed = 3.0
         
         st.markdown("---")
         
@@ -551,6 +667,8 @@ def camera_page():
         face_detection_settings['enabled'] = face_detection_enabled
         face_detection_settings['color'] = detection_color
         face_detection_settings['confidence'] = confidence_threshold
+        face_detection_settings['falling_effect'] = falling_effect_enabled
+        face_detection_settings['falling_speed'] = falling_speed
         
         # WebRTC摄像头流
         webrtc_ctx = webrtc_streamer(
@@ -575,7 +693,9 @@ def camera_page():
             
             3. 绿色框表示检测到的人脸
             
-            4. 可以调整置信度阈值来改变检测灵敏度
+            4. 🎭 开启掉落效果，人脸会每秒复制并掉落
+            
+            5. 可以调整掉落速度和检测灵敏度
             """)
             
             st.info("🔒 隐私提醒：视频流仅在本地处理，不会上传到服务器")
@@ -587,7 +707,9 @@ def camera_page():
             
             3. Green boxes indicate detected faces
             
-            4. Adjust confidence threshold to change sensitivity
+            4. 🎭 Enable falling effect to make faces fall every second
+            
+            5. Adjust falling speed and detection sensitivity
             """)
             
             st.info("🔒 Privacy Notice: Video stream is processed locally only, not uploaded to server")
@@ -599,6 +721,21 @@ def camera_page():
         else:
             status_text = "人脸检测: 关闭" if st.session_state.language == 'zh' else "Face Detection: OFF"
             st.warning(f"⚠️ {status_text}")
+            
+        if falling_effect_enabled:
+            falling_text = "掉落效果: 开启" if st.session_state.language == 'zh' else "Falling Effect: ON"
+            st.success(f"🎭 {falling_text}")
+            
+            # 显示当前掉落中的人脸数量
+            try:
+                falling_count = len(falling_faces) if 'falling_faces' in globals() else 0
+                count_text = f"掉落中: {falling_count} 个人脸" if st.session_state.language == 'zh' else f"Falling: {falling_count} faces"
+                st.info(f"📈 {count_text}")
+            except:
+                pass
+        else:
+            falling_text = "掉落效果: 关闭" if st.session_state.language == 'zh' else "Falling Effect: OFF"
+            st.info(f"🎭 {falling_text}")
 
 if __name__ == "__main__":
     main()
