@@ -1,390 +1,391 @@
 # 🎨 Interactive AI Website - FunnyWebsite
 
-## 🎪 FunnyWebsite 概述
+## 🎪 FunnyWebsite Overview
 
-**FunnyWebsite** 是一个创新的交互式 AI 网站，融合了人工智能图像生成和实时人脸识别技术，为用户提供独特的视觉体验和娱乐功能。该网站采用 Streamlit 框架构建，具有现代化的双语用户界面，让技术变得有趣而富有创意。
+**FunnyWebsite** is an innovative interactive AI website that combines artificial intelligence image generation with real-time face recognition technology, providing users with unique visual experiences and entertainment features. Built with the Streamlit framework, it features a modern bilingual user interface that makes technology fun and creative.
 
-### 🎯 项目亮点
-- **双核心功能**: AI 图像生成 + 智能人脸识别
-- **创新视觉效果**: 独特的重力掉落动画系统
-- **实时交互**: 基于 WebRTC 的即时摄像头处理
-- **物理模拟**: 真实的重力、碰撞和堆叠效果
-- **国际化支持**: 完整的中英文双语界面
-
----
-
-## 🚀 FunnyWebsite 核心功能详解
-
-### 💡 功能一：AI 智能图像生成器
-
-**技术核心**: 基于 Stable Diffusion v1.5 的文本到图像生成系统
-
-#### 📋 功能特性
-- **🎨 创意生成**: 根据文字描述生成高质量艺术图像
-- **🌍 多语言支持**: 支持中文和英文提示词输入
-- **⚙️ 参数可调**: 自定义图像尺寸、推理步数、引导比例
-- **💾 便捷保存**: 一键下载生成的作品
-- **🚀 GPU 加速**: 支持 CUDA 加速，提升生成速度
-
-#### 🎮 使用操作指南
-
-1. **启动功能**
-   ```
-   📍 导航栏 → 选择 "AI 图像生成器"
-   ```
-
-2. **输入创意**
-   ```
-   ✏️ 在文本框输入描述性文字
-   示例: "一只在彩虹桥上奔跑的独角兽"
-        "A cute robot playing with children in a park"
-   ```
-
-3. **调整生成参数**
-   ```
-   📐 图像尺寸: 512x512 / 768x768 / 1024x1024
-   🔢 推理步数: 20-50 (步数越多质量越好，时间越长)
-   📏 引导比例: 7.5-15 (数值越高越贴合描述)
-   ```
-
-4. **开始生成**
-   ```
-   🎯 点击 "生成图像" 按钮
-   ⏳ 等待 10-30 秒处理完成
-   📥 点击 "下载图像" 保存作品
-   ```
+### 🎯 Project Highlights
+- **Dual Core Features**: AI Image Generation + Smart Face Recognition
+- **Innovative Visual Effects**: Unique gravity-falling animation system
+- **Real-time Interaction**: Instant camera processing based on WebRTC
+- **Physics Simulation**: Realistic gravity, collision, and stacking effects
+- **Internationalization Support**: Complete bilingual interface in Chinese and English
 
 ---
 
-### 🎭 功能二：智能人脸识别与互动系统
+## 🚀 FunnyWebsite Core Features
 
-**技术核心**: OpenCV 人脸检测 + 自研物理引擎 + WebRTC 实时视频流
+### 💡 Feature 1: AI Intelligent Image Generator
 
-#### 🌟 创新特性
-- **👤 多人脸检测**: 实时识别画面中的多个人脸
-- **🎪 重力掉落效果**: 检测到的人脸会复制并从顶部掉落
-- **🏗️ 垂直堆叠系统**: 掉落的人脸像积木一样层层堆叠
-- **⏰ 10秒生存机制**: 掉落人脸显示倒计时，10秒后消失
-- **🎯 物理仿真**: 重力、弹跳、摩擦力的真实模拟
-- **🎨 视觉反馈**: 绿色检测框和动态效果提示
+**Technical Core**: Text-to-image generation system based on Stable Diffusion v1.5
 
-#### 🕹️ 使用操作指南
+#### 📋 Feature Highlights
+- **🎨 Creative Generation**: Generate high-quality artistic images from text descriptions
+- **🌍 Multi-language Support**: Support for both Chinese and English prompts
+- **⚙️ Adjustable Parameters**: Customize image size, inference steps, guidance scale
+- **💾 Easy Saving**: One-click download of generated artworks
+- **🚀 GPU Acceleration**: CUDA acceleration support for faster generation
 
-1. **激活摄像头**
+#### 🎮 Usage Instructions
+
+1. **Launch Feature**
    ```
-   📍 导航栏 → 选择 "摄像头人脸检测"
-   📷 点击 "开始" 按钮启动摄像头
-   ✅ 允许浏览器访问摄像头权限
-   ```
-
-2. **调整检测参数**
-   ```
-   🎚️ 检测敏感度: 滑动条调整识别精度
-   🎪 掉落效果: 开关控制是否启用掉落动画
-   ⚡ 掉落速度: 调节人脸下降的速度
-   🎨 视觉设置: 自定义检测框颜色和透明度
+   📍 Navigation → Select "AI Image Generator"
    ```
 
-3. **体验互动效果**
+2. **Input Creativity**
    ```
-   👤 单人模式:
-      - 面向摄像头，观察绿色检测框
-      - 检测到人脸后自动复制并掉落
-      - 掉落的人脸会在地面弹跳并停止
-
-   👥 多人模式:
-      - 多人同时入镜可看到同时检测
-      - 各自的人脸分别掉落和堆叠
-      - 形成有趣的人脸塔状结构
+   ✏️ Enter descriptive text in the input box
+   Examples: "A unicorn running on a rainbow bridge"
+            "A cute robot playing with children in a park"
    ```
 
-4. **高级互动技巧**
+3. **Adjust Generation Parameters**
    ```
-   🎯 制造堆叠效果:
-      - 快速进出画面触发多次检测
-      - 观察人脸垂直堆叠的物理效果
-      - 等待10秒倒计时看清理效果
+   📐 Image Size: 512x512 / 768x768 / 1024x1024
+   🔢 Inference Steps: 20-50 (more steps = better quality, longer time)
+   📏 Guidance Scale: 7.5-15 (higher values = closer to description)
+   ```
 
-   🎪 调试与优化:
-      - 调整光线确保清晰检测
-      - 保持适当距离提高识别率
-      - 使用不同角度测试检测范围
+4. **Start Generation**
+   ```
+   🎯 Click "Generate Image" button
+   ⏳ Wait 10-30 seconds for processing
+   📥 Click "Download Image" to save artwork
    ```
 
 ---
 
-## 🔧 FunnyWebsite 技术架构
+### 🎭 Feature 2: Smart Face Recognition & Interactive System
 
-### 🏗️ 系统组成
+**Technical Core**: OpenCV Face Detection + Custom Physics Engine + WebRTC Real-time Video Stream
+
+#### 🌟 Innovative Features
+- **👤 Multi-face Detection**: Real-time recognition of multiple faces in the frame
+- **🎪 Gravity Falling Effect**: Detected faces are copied and fall from the top
+- **🏗️ Vertical Stacking System**: Falling faces stack like building blocks layer by layer
+- **⏰ 10-second Survival Mechanism**: Falling faces show countdown and disappear after 10 seconds
+- **🎯 Physics Simulation**: Realistic simulation of gravity, bouncing, and friction
+- **🎨 Visual Feedback**: Green detection boxes and dynamic effect indicators
+
+#### 🕹️ Usage Instructions
+
+1. **Activate Camera**
+   ```
+   📍 Navigation → Select "Camera Face Detection"
+   📷 Click "Start" button to activate camera
+   ✅ Allow browser access to camera permissions
+   ```
+
+2. **Adjust Detection Parameters**
+   ```
+   🎚️ Detection Sensitivity: Slider to adjust recognition accuracy
+   🎪 Falling Effect: Toggle to enable/disable falling animation
+   ⚡ Falling Speed: Adjust the speed of face descent
+   🎨 Visual Settings: Customize detection box color and transparency
+   ```
+
+3. **Experience Interactive Effects**
+   ```
+   👤 Single Person Mode:
+      - Face the camera and observe green detection box
+      - Detected faces automatically copy and fall
+      - Falling faces bounce on the ground and stop
+
+   👥 Multi-person Mode:
+      - Multiple people can be detected simultaneously
+      - Each person's face falls and stacks separately
+      - Forms interesting face tower structures
+   ```
+
+4. **Advanced Interactive Tips**
+   ```
+   🎯 Create Stacking Effects:
+      - Quickly enter/exit frame to trigger multiple detections
+      - Observe vertical stacking physics effects
+      - Watch 10-second countdown cleanup effects
+
+   🎪 Debugging & Optimization:
+      - Adjust lighting for clear detection
+      - Maintain appropriate distance for better recognition
+      - Test detection range from different angles
+   ```
+
+---
+
+## 🔧 FunnyWebsite Technical Architecture
+
+### 🏗️ System Components
 ```
-FunnyWebsite 架构图:
+FunnyWebsite Architecture:
 ┌─────────────────────────────────────────┐
-│              前端界面层                    │
+│            Frontend Interface Layer      │
 ├─────────────────────────────────────────┤
-│  Streamlit Web UI + 双语切换系统          │
+│  Streamlit Web UI + Bilingual System    │
 └─────────────────────────────────────────┘
           ↓                    ↓
 ┌──────────────────┐  ┌──────────────────┐
-│   AI图像生成模块    │  │  人脸检测模块      │
+│  AI Image Module │  │ Face Detection   │
 ├──────────────────┤  ├──────────────────┤
-│• Stable Diffusion │  │• OpenCV检测       │
-│• 模型加载与推理    │  │• WebRTC视频流     │
-│• 参数控制        │  │• 物理引擎模拟      │
-│• 图像处理       │  │• 碰撞检测系统      │
+│• Stable Diffusion│  │• OpenCV Detection│
+│• Model Loading   │  │• WebRTC Stream   │
+│• Parameter Control│  │• Physics Engine  │
+│• Image Processing│  │• Collision System│
 └──────────────────┘  └──────────────────┘
 ```
 
-### ⚙️ 核心技术栈
-- **前端框架**: Streamlit (v1.28+)
-- **AI 模型**: Stable Diffusion v1.5 + Diffusers
-- **视频处理**: streamlit-webrtc + WebRTC
-- **计算机视觉**: OpenCV (v4.8+)
-- **深度学习**: PyTorch (v2.0+) + CUDA
-- **物理引擎**: 自研重力模拟系统
+### ⚙️ Core Technology Stack
+- **Frontend Framework**: Streamlit (v1.28+)
+- **AI Model**: Stable Diffusion v1.5 + Diffusers
+- **Video Processing**: streamlit-webrtc + WebRTC
+- **Computer Vision**: OpenCV (v4.8+)
+- **Deep Learning**: PyTorch (v2.0+) + CUDA
+- **Physics Engine**: Custom gravity simulation system
 
-一个集成了 **AI 图像生成** 和 **实时人脸检测** 功能的交互式 Web 应用程序。
+An interactive web application integrating **AI Image Generation** and **Real-time Face Detection** functionalities.
 
-## 🌟 主要功能
+## 🌟 Main Features
 
-### 📸 **AI 图像生成器**
-- 使用 Stable Diffusion v1.5 模型生成高质量图像
-- 支持中英文提示词
-- 可调节图像尺寸和生成参数
-- 一键下载生成的图像
+### 📸 **AI Image Generator**
+- Generate high-quality images using Stable Diffusion v1.5 model
+- Support for Chinese and English prompts
+- Adjustable image dimensions and generation parameters
+- One-click download of generated images
 
-### 🎭 **智能摄像头人脸检测**
-- 实时人脸检测和追踪
-- 创新的**重力掉落效果**：检测到的人脸会复制并从顶部掉落
-- **物理引擎**：真实的重力、弹跳和摩擦力模拟
-- **垂直堆叠**：掉落的人脸可以像积木一样堆叠
-- **10秒生存机制**：掉落的人脸会在10秒后自动消失
-- **多人脸支持**：可同时检测和处理多个人脸
+### 🎭 **Smart Camera Face Detection**
+- Real-time face detection and tracking
+- Innovative **Gravity Falling Effect**: Detected faces are copied and fall from the top
+- **Physics Engine**: Realistic gravity, bounce, and friction simulation
+- **Vertical Stacking**: Falling faces can stack like building blocks
+- **10-second Survival Mechanism**: Falling faces automatically disappear after 10 seconds
+- **Multi-face Support**: Simultaneous detection and processing of multiple faces
 
-### 🌐 **双语界面**
-- 完整的中英文界面切换
-- 所有功能都支持双语操作
+### 🌐 **Bilingual Interface**
+- Complete Chinese-English interface switching
+- All features support bilingual operation
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 环境要求
+### Requirements
 
 - Python 3.8+
-- 摄像头设备
-- CUDA 兼容的 GPU（推荐，用于加速 AI 图像生成）
+- Camera device
+- CUDA-compatible GPU (recommended for AI image generation acceleration)
 
-### 安装步骤
+### Installation Steps
 
-1. **克隆项目**
+1. **Clone Project**
    ```bash
    git clone https://github.com/Majiayin1113/Interactive_Ai_website.git
    cd Interactive_Ai_website/Website1/week05
    ```
 
-2. **安装依赖**
+2. **Install Dependencies**
    ```bash
    pip install -r requirements.txt
    pip install streamlit-webrtc av
    ```
 
-3. **运行应用**
+3. **Run Application**
    ```bash
-   streamlit run streamlit_image_generator.py
+   streamlit run FunnyWebsite.py
    ```
 
-4. **访问应用**
-   - 在浏览器中打开: `http://localhost:8501`
+4. **Access Application**
+   - Open in browser: `http://localhost:8501`
 
-## 📋 依赖包说明
+## 📋 Dependencies
 
-### 核心依赖
+### Core Dependencies
 ```
-streamlit>=1.28.0          # Web 应用框架
-streamlit-webrtc>=0.45.0   # 实时视频流处理
-diffusers>=0.21.0          # Stable Diffusion 模型
-torch>=2.0.0               # 深度学习框架
-opencv-python>=4.8.0       # 计算机视觉库
-transformers>=4.30.0       # Transformer 模型
-accelerate>=0.20.0         # 模型加速
-av>=10.0.0                 # 音视频处理
-```
-
-### 可选依赖（GPU加速）
-```
-torch[cuda]                # CUDA 支持
-xformers                   # 内存优化
+streamlit>=1.28.0          # Web application framework
+streamlit-webrtc>=0.45.0   # Real-time video stream processing
+diffusers>=0.21.0          # Stable Diffusion models
+torch>=2.0.0               # Deep learning framework
+opencv-python>=4.8.0       # Computer vision library
+transformers>=4.30.0       # Transformer models
+accelerate>=0.20.0         # Model acceleration
+av>=10.0.0                 # Audio/video processing
 ```
 
-## 🎮 使用指南
+### Optional Dependencies (GPU Acceleration)
+```
+torch[cuda]                # CUDA support
+xformers                   # Memory optimization
+```
 
-### AI 图像生成器使用
+## 🎮 Usage Guide
 
-1. **选择功能**
-   - 在侧边栏点击"AI 图像生成器"
+### AI Image Generator Usage
 
-2. **输入提示词**
-   - 在文本框中输入描述（支持中英文）
-   - 例如："一只可爱的小狗在花园里玩耍"
+1. **Select Feature**
+   - Click "AI Image Generator" in the sidebar
 
-3. **调整参数**
-   - **图像尺寸**: 选择生成图像的分辨率
-   - **推理步数**: 控制生成质量（步数越多质量越好但速度越慢）
-   - **引导比例**: 控制对提示词的遵循程度
+2. **Input Prompts**
+   - Enter description in text box (supports Chinese and English)
+   - Example: "A cute puppy playing in a garden"
 
-4. **生成图像**
-   - 点击"生成图像"按钮
-   - 等待处理完成（通常需要10-30秒）
+3. **Adjust Parameters**
+   - **Image Size**: Choose generation image resolution
+   - **Inference Steps**: Control generation quality (more steps = better quality but slower)
+   - **Guidance Scale**: Control adherence to prompts
 
-### 人脸检测摄像头使用
+4. **Generate Image**
+   - Click "Generate Image" button
+   - Wait for processing completion (usually 10-30 seconds)
 
-1. **选择功能**
-   - 在侧边栏点击"摄像头人脸检测"
+### Face Detection Camera Usage
 
-2. **启动摄像头**
-   - 点击"开始"按钮
-   - 允许浏览器访问摄像头权限
+1. **Select Feature**
+   - Click "Camera Face Detection" in the sidebar
 
-3. **调整检测参数**
-   - **检测敏感度**: 调整人脸检测的敏感程度
-   - **掉落效果开关**: 启用/禁用人脸掉落动画
-   - **掉落速度**: 控制人脸掉落的速度
+2. **Start Camera**
+   - Click "Start" button
+   - Allow browser camera permissions
 
-4. **体验互动效果**
-   - 面向摄像头，观察绿色检测框
-   - 启用掉落效果后，检测到的人脸会复制并掉落
-   - 多人同时使用可看到堆叠效果
+3. **Adjust Detection Parameters**
+   - **Detection Sensitivity**: Adjust face detection sensitivity
+   - **Falling Effect Toggle**: Enable/disable face falling animation
+   - **Falling Speed**: Control face falling speed
 
-## 🎯 特色功能详解
+4. **Experience Interactive Effects**
+   - Face the camera and observe green detection boxes
+   - With falling effects enabled, detected faces will be copied and fall
+   - Multiple people can see stacking effects simultaneously
 
-### 重力物理系统
-- **真实重力**: 掉落的人脸受重力影响加速下降
-- **弹跳效果**: 撞击地面或其他人脸时产生自然弹跳
-- **摩擦力**: 地面摩擦使人脸逐渐停止移动
-- **碰撞检测**: 人脸之间的碰撞和堆叠效果
+## 🎯 Feature Details
 
-### 垂直堆叠机制
-- **智能检测**: 自动检测人脸间的水平重叠
-- **层级堆叠**: 后掉落的人脸会停在先落地人脸的上方
-- **稳定结构**: 堆叠后的人脸形成稳定的塔状结构
-- **防重叠**: 避免人脸在同一层重叠
+### Gravity Physics System
+- **Realistic Gravity**: Falling faces accelerate downward under gravity
+- **Bounce Effects**: Natural bouncing when hitting ground or other faces
+- **Friction**: Ground friction gradually stops face movement
+- **Collision Detection**: Collision and stacking effects between faces
 
-### 生存时间系统
-- **10秒倒计时**: 每个掉落的人脸显示剩余存活时间
-- **渐变效果**: 接近消失时边框逐渐变透明
-- **自动清理**: 超时后自动从画面中移除
+### Vertical Stacking Mechanism
+- **Smart Detection**: Automatically detect horizontal overlap between faces
+- **Layer Stacking**: Later-falling faces stop above earlier-landed faces
+- **Stable Structure**: Stacked faces form stable tower-like structures
+- **Overlap Prevention**: Avoid face overlap on the same layer
 
-## 🔧 高级配置
+### Survival Time System
+- **10-second Countdown**: Each falling face shows remaining survival time
+- **Fade Effects**: Borders gradually become transparent as disappearance approaches
+- **Automatic Cleanup**: Automatically removed from screen after timeout
 
-### 性能优化设置
+## 🔧 Advanced Configuration
+
+### Performance Optimization Settings
 
 ```python
-# 在代码中可调整的参数
+# Adjustable parameters in code
 face_detection_settings = {
     'enabled': True,
-    'color': (0, 255, 0),        # 检测框颜色
-    'confidence': 0.3,           # 检测置信度
-    'falling_effect': True,      # 掉落效果开关
-    'falling_speed': 3.0         # 掉落速度
+    'color': (0, 255, 0),        # Detection box color
+    'confidence': 0.3,           # Detection confidence
+    'falling_effect': True,      # Falling effect toggle
+    'falling_speed': 3.0         # Falling speed
 }
 
-# 物理引擎参数
-gravity = 0.5           # 重力加速度
-bounce_factor = 0.3     # 弹跳系数
-friction = 0.95         # 摩擦系数
-lifetime = 10.0         # 人脸生存时间（秒）
+# Physics engine parameters
+gravity = 0.5           # Gravity acceleration
+bounce_factor = 0.3     # Bounce coefficient
+friction = 0.95         # Friction coefficient
+lifetime = 10.0         # Face survival time (seconds)
 ```
 
-### GPU 加速配置
+### GPU Acceleration Configuration
 
-如果您有 NVIDIA GPU，可以通过以下方式启用 CUDA 加速：
+If you have an NVIDIA GPU, you can enable CUDA acceleration with:
 
 ```bash
-# 安装 CUDA 版本的 PyTorch
+# Install CUDA version of PyTorch
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 ```
 
-## 📂 项目结构
+## 📂 Project Structure
 
 ```
 Interactive_Ai_website/
-├── README.md                          # 项目说明文档
+├── README.md                          # Project documentation
 ├── Website1/week05/
-│   ├── streamlit_image_generator.py   # 主应用程序
-│   ├── requirements.txt               # Python 依赖
-│   ├── camera_face_detection.py       # 人脸检测模块
-│   ├── simple_camera_test.py         # 摄像头测试
-│   └── generate_puppy.py             # 图像生成示例
-└── Game/                             # 游戏相关文件
+│   ├── FunnyWebsite.py               # Main application
+│   ├── streamlit_image_generator.py   # Image generator module
+│   ├── requirements.txt               # Python dependencies
+│   ├── camera_face_detection.py       # Face detection module
+│   ├── simple_camera_test.py         # Camera testing
+│   └── generate_puppy.py             # Image generation example
+└── Game/                             # Game-related files
 ```
 
-## 🐛 故障排除
+## 🐛 Troubleshooting
 
-### 常见问题
+### Common Issues
 
-1. **摄像头无法启动**
-   - 确保浏览器已授予摄像头权限
-   - 检查是否有其他程序占用摄像头
-   - 尝试刷新页面重新授权
+1. **Camera Won't Start**
+   - Ensure browser has granted camera permissions
+   - Check if other programs are using the camera
+   - Try refreshing the page to re-authorize
 
-2. **图像生成速度慢**
-   - 确认是否启用了 GPU 加速
-   - 减少推理步数以提高速度
-   - 降低图像分辨率
+2. **Slow Image Generation**
+   - Confirm if GPU acceleration is enabled
+   - Reduce inference steps to improve speed
+   - Lower image resolution
 
-3. **人脸检测不准确**
-   - 调整检测敏感度参数
-   - 确保光线充足
-   - 保持人脸清晰可见
+3. **Inaccurate Face Detection**
+   - Adjust detection sensitivity parameters
+   - Ensure sufficient lighting
+   - Keep faces clearly visible
 
-4. **掉落效果异常**
-   - 检查浏览器是否支持 WebRTC
-   - 尝试降低掉落速度参数
-   - 重启应用程序
+4. **Abnormal Falling Effects**
+   - Check if browser supports WebRTC
+   - Try reducing falling speed parameters
+   - Restart the application
 
-### 性能优化建议
+### Performance Optimization Recommendations
 
-- **硬件要求**: 推荐使用 GPU 进行 AI 图像生成
-- **内存管理**: 长时间使用后可重启应用释放内存
-- **网络要求**: 初次运行需要下载模型文件（约4GB）
+- **Hardware Requirements**: GPU recommended for AI image generation
+- **Memory Management**: Restart application after extended use to free memory
+- **Network Requirements**: Initial run requires downloading model files (~4GB)
 
-## 🔄 更新日志
+## 🔄 Change Log
 
 ### v2.0.0 (2025-10-02)
-- ✨ 新增垂直堆叠功能
-- 🔧 优化物理引擎稳定性
-- 🐛 修复人脸立即消失的问题
-- 📱 改进移动端兼容性
+- ✨ Added vertical stacking functionality
+- 🔧 Optimized physics engine stability
+- 🐛 Fixed face immediate disappearance issue
+- 📱 Improved mobile compatibility
 
 ### v1.5.0 (2025-10-01)
-- ✨ 添加重力物理系统
-- ✨ 实现10秒生存机制
-- 🎨 优化用户界面
+- ✨ Added gravity physics system
+- ✨ Implemented 10-second survival mechanism
+- 🎨 Optimized user interface
 
 ### v1.0.0 (2025-09-30)
-- 🎉 初始发布
-- ✨ AI 图像生成功能
-- ✨ 基础人脸检测
-- 🌐 双语界面支持
+- 🎉 Initial release
+- ✨ AI image generation functionality
+- ✨ Basic face detection
+- 🌐 Bilingual interface support
 
-## 📝 许可证
+## 📝 License
 
-本项目采用 MIT 许可证 - 详见 [LICENSE](LICENSE) 文件
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
-## 🤝 贡献指南
+## 🤝 Contributing
 
-欢迎提交 Issues 和 Pull Requests！
+Issues and Pull Requests are welcome!
 
-1. Fork 本项目
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 开启 Pull Request
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 📧 联系方式
+## 📧 Contact
 
-- 项目维护者: Majiayin1113
+- Project Maintainer: Majiayin1113
 - GitHub: [https://github.com/Majiayin1113](https://github.com/Majiayin1113)
-- 项目链接: [https://github.com/Majiayin1113/Interactive_Ai_website](https://github.com/Majiayin1113/Interactive_Ai_website)
+- Project Link: [https://github.com/Majiayin1113/Interactive_Ai_website](https://github.com/Majiayin1113/Interactive_Ai_website)
 
 ---
 
-⭐ 如果这个项目对您有帮助，请给我们一个星标！
+⭐ If this project helps you, please give us a star!
