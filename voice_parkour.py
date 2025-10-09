@@ -5,6 +5,7 @@ import math
 import queue
 import threading
 import numpy as np
+import random
 
 try:
     import pyaudio
@@ -125,6 +126,14 @@ def main():
             print(f'  {i}: {name} (in-ch={chans})')
     mic.start_stream()
 
+    # high score file
+    HS_PATH = os.path.join(os.path.dirname(__file__), 'highscore.txt')
+    try:
+        with open(HS_PATH, 'r', encoding='utf-8') as f:
+            high_score = int(f.read().strip() or '0')
+    except Exception:
+        high_score = 0
+
     # Player state (a little chick)
     player_x = 120
     player_y = GROUND_Y
@@ -133,12 +142,15 @@ def main():
 
     # Game state
     scroll_x = 0
-    base_speed = 180.0  # chick always runs forward
+    base_speed = 180.0  # fish always swims forward
     speed = base_speed
     obstacles = []
     score = 0
     spawn_timer = 0.0
-    spawn_interval = 1.2
+    # randomized spawn interval range (seconds)
+    spawn_min = 0.7
+    spawn_max = 1.8
+    spawn_interval = random.uniform(spawn_min, spawn_max)
 
     font = pygame.font.SysFont(None, 24)
     # try to load external fish sprite
@@ -158,7 +170,10 @@ def main():
         smooth_level = 0.0
         smooth_db = -120.0
         ema_alpha = 0.15
-        sensitivity = 1.0  # multiplier for jump strength
+        # overall sensitivity (keeps jumps sensible)
+        sensitivity = 1.2
+        # kept for legacy scaling (set to 1.0)
+        jump_multiplier = 1.0
         while running:
             dt = clock.tick(60) / 1000.0
             for event in pygame.event.get():
@@ -184,14 +199,25 @@ def main():
             # Map smoothed level to jump impulse; chick always runs forward at base_speed
             speed = base_speed
 
-            # jumping: louder -> higher jump; use a threshold to trigger
-            jump_threshold = 0.12
-            if smooth_level > jump_threshold and on_ground:
-                strength = max(0.0, min(1.0, (smooth_level - jump_threshold) / (1.0 - jump_threshold)))
-                # corrected impulse (do NOT multiply by dt here)
-                impulse = - (0.85 + strength * 2.8) * 700.0 * sensitivity
-                vel_y = impulse
-                on_ground = False
+            # jumping: discretize level into tiers so louder sounds give higher jumps
+            # thresholds define the lower bound for each tier
+            # include a tiny jump at 0.03 for sensitivity
+            tiers = [0.03, 0.18, 0.35, 0.55, 0.75]
+            # multipliers per tier (0: no jump, 1..n increasing heights)
+            tier_scales = [0.0, 0.35, 0.9, 1.6, 2.2, 2.8]
+            if on_ground:
+                tier = 0
+                for i, t in enumerate(tiers, start=1):
+                    if smooth_level >= t:
+                        tier = i
+                if tier > 0:
+                    scale = tier_scales[tier]
+                    # slightly increase sensitivity so small sounds register
+                    base = 650.0 * (sensitivity * 1.1) * jump_multiplier
+                    # smaller offset for the tiny jump
+                    impulse = - (0.5 + scale) * base
+                    vel_y = impulse
+                    on_ground = False
 
             # physics
             gravity = 1800.0
@@ -205,31 +231,38 @@ def main():
             # horizontal movement: scroll world
             scroll_x += speed * dt
 
-            # spawn obstacles
+            # spawn obstacles (randomized interval and size)
             spawn_timer += dt
             if spawn_timer >= spawn_interval:
                 spawn_timer = 0.0
-                # obstacles are tuples (x, w, h)
+                # obstacles are tuples (x, w, h, passed)
                 ox = scroll_x + WIDTH + 50
-                w = 36
-                h = 36
+                # randomize size a bit
+                w = random.randint(28, 48)
+                h = random.randint(28, 56)
                 obstacles.append([ox, w, h, False])
+                # next spawn interval randomized
+                spawn_interval = random.uniform(spawn_min, spawn_max)
 
             # move obstacles left relative to scroll
             for ob in obstacles:
                 ob[0] -= speed * dt
 
-            # remove passed obstacles and increase score
-            new_obs = []
+            # award score when the player passes an obstacle (immediate)
             for ob in obstacles:
-                ox, w, h, passed = ob
-                if ox + w < 0:
-                    # scrolled off screen
-                    if not passed:
-                        score += 1
-                    continue
-                new_obs.append(ob)
-            obstacles = new_obs
+                if not ob[3] and (ob[0] + ob[1]) < player_x:
+                    ob[3] = True
+                    score += 1
+                    if score > high_score:
+                        high_score = score
+                        try:
+                            with open(HS_PATH, 'w', encoding='utf-8') as f:
+                                f.write(str(high_score))
+                        except Exception:
+                            pass
+
+            # remove obstacles that went off screen far to keep list small
+            obstacles = [ob for ob in obstacles if ob[0] + ob[1] > -100]
 
             # draw
             screen.fill((135, 206, 235))  # sky
@@ -306,16 +339,11 @@ def main():
                     spawn_timer = 0.0
                     break
 
-            # mark obstacles as passed if chick passed
-            for ob in obstacles:
-                if not ob[3] and (ob[0] + ob[1]) < player_x:
-                    ob[3] = True
-
             # HUD
             player_rect = fish_rect
 
-            # HUD
-            txt = font.render(f'Level: {smooth_level:.3f}  Score: {score}', True, (0, 0, 0))
+            # HUD: show score and high score
+            txt = font.render(f'Score: {score}  High: {high_score}', True, (0, 0, 0))
             screen.blit(txt, (8, 8))
             instr = font.render('Chick auto-runs. Make sound to jump higher and clear obstacles.', True, (0, 0, 0))
             screen.blit(instr, (8, 32))
@@ -345,7 +373,7 @@ def main():
 
             # bigger text for numeric readout
             big_font = pygame.font.SysFont(None, 28)
-            right_txt = big_font.render(f'{smooth_level:.3f}', True, color)
+            right_txt = big_font.render(f'{smooth_level:.2f}', True, color)
             db_txt = font.render(f'{smooth_db:.1f} dB', True, (0, 0, 0))
             screen.blit(right_txt, (meter_x + meter_w + 8, meter_y))
             screen.blit(db_txt, (meter_x + meter_w + 8, meter_y + 26))
