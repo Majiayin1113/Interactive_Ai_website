@@ -388,4 +388,37 @@ Issues and Pull Requests are welcome!
 
 ---
 
+## 🧰 Environment (新增)
+
+本仓库已添加用于快速创建 Python 虚拟环境的脚本：
+
+- `create_venv.ps1`（Windows PowerShell）
+- `create_venv.sh`（Unix / macOS bash）
+- 顶层 `requirements.txt` 已合并自项目子目录并去重，用于统一安装依赖。
+
+使用示例（Windows PowerShell）：
+
+```powershell
+# 在仓库根目录运行（需要 PowerShell）：
+.\create_venv.ps1 -VenvName .venv
+# 然后在当前会话激活虚拟环境：
+& .\.venv\Scripts\Activate.ps1
+```
+
+使用示例（Unix / macOS）：
+
+```bash
+# 在仓库根目录运行：
+./create_venv.sh .venv
+# 激活：
+source .venv/bin/activate
+```
+
+安装完成后即可运行项目中的示例或 Streamlit 应用，例如：
+
+```bash
+streamlit run Website1/week05/FunnyWebsite.py
+```
+
+
 ⭐ If this project helps you, please give us a star!
