@@ -497,17 +497,6 @@ def image_generator_page():
         st.info(device_info)
         st.markdown("---")
         
-        # 输入参数
-        st.subheader(get_text('image_settings', st.session_state.language))
-        prompt = st.text_area(
-            get_text('image_description', st.session_state.language), 
-            value=get_text('default_prompt', st.session_state.language),
-            height=100,
-            help=get_text('image_description_help', st.session_state.language)
-        )
-        
-        steps = st.slider(get_text('generation_steps', st.session_state.language), min_value=10, max_value=50, value=20, help=get_text('steps_help', st.session_state.language))
-        
         # 图像尺寸选择
         st.subheader(get_text('image_dimensions', st.session_state.language))
         size_options = {
@@ -518,6 +507,8 @@ def image_generator_page():
         selected_size = st.selectbox(get_text('select_size', st.session_state.language), list(size_options.keys()))
         width, height = size_options[selected_size]
         
+        steps = st.slider(get_text('generation_steps', st.session_state.language), min_value=10, max_value=50, value=20, help=get_text('steps_help', st.session_state.language))
+        
         st.markdown("---")
         
         # 预设提示词
@@ -527,19 +518,31 @@ def image_generator_page():
         for name, preset_prompt in preset_prompts.items():
             if st.button(name, use_container_width=True):
                 st.session_state.selected_prompt = preset_prompt
-        
-        # 更新提示词
-        if 'selected_prompt' in st.session_state:
-            prompt = st.session_state.selected_prompt
-            # 清除session state以避免持续更新
-            del st.session_state.selected_prompt
-        
-        st.markdown("---")
-        
-        # 生成按钮
-        generate_button = st.button(get_text('generate_button', st.session_state.language), type="primary", use_container_width=True)
     
     # 主内容区域
+    st.title(get_text('app_title', st.session_state.language))
+    
+    # 图片描述输入区域（放在中间）
+    st.subheader(get_text('image_settings', st.session_state.language))
+    prompt = st.text_area(
+        get_text('image_description', st.session_state.language), 
+        value=get_text('default_prompt', st.session_state.language),
+        height=100,
+        help=get_text('image_description_help', st.session_state.language),
+        key="prompt_input"
+    )
+    
+    # 更新提示词（如果从预设选择）
+    if 'selected_prompt' in st.session_state:
+        prompt = st.session_state.selected_prompt
+        # 清除session state以避免持续更新
+        del st.session_state.selected_prompt
+        st.rerun()
+    
+    # 生成按钮
+    generate_button = st.button(get_text('generate_button', st.session_state.language), type="primary", use_container_width=True)
+    
+    st.markdown("---")
     st.title(get_text('image_display', st.session_state.language))
     
     # 创建两列布局用于显示结果
