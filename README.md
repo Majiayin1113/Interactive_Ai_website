@@ -1,424 +1,251 @@
-# 🎨 Interactive AI Website - FunnyWebsite
+# 🎨 FunnyWebsite - 多功能AI互动网站
 
-## 🎪 FunnyWebsite Overview
+## 📖 项目简介
 
-**FunnyWebsite** is an innovative interactive AI website that combines artificial intelligence image generation with real-time face recognition technology, providing users with unique visual experiences and entertainment features. Built with the Streamlit framework, it features a modern bilingual user interface that makes technology fun and creative.
-
-### 🎯 Project Highlights
-- **Dual Core Features**: AI Image Generation + Smart Face Recognition
-- **Innovative Visual Effects**: Unique gravity-falling animation system
-- **Real-time Interaction**: Instant camera processing based on WebRTC
-- **Physics Simulation**: Realistic gravity, collision, and stacking effects
-- **Internationalization Support**: Complete bilingual interface in Chinese and English
+**FunnyWebsite** 是一个集成了三大核心功能的AI互动网站，包括AI图像生成、实时人脸识别和声控游戏。采用Streamlit框架构建，支持中英文双语界面。
 
 ---
 
-## 🚀 FunnyWebsite Core Features
+## ✨ 核心功能
 
-### 💡 Feature 1: AI Intelligent Image Generator
+### 1. 🎨 AI图像生成器
+基于 Stable Diffusion v1.5 的文本生成图像系统
+- 📝 **文本生成图像**：输入文字描述，AI自动生成高质量图片
+- 🎯 **预设模板**：内置6种常用提示词（可爱小狗、美丽风景、未来城市等）
+- ⚙️ **参数调节**：自定义图像尺寸（512x512/768x512/512x768）和生成步数
+- 💾 **一键下载**：生成的图片可直接下载保存
+- 🚀 **GPU加速**：支持CUDA加速，提升生成速度
+- 📚 **历史记录**：保存最近10次生成的图像
 
-**Technical Core**: Text-to-image generation system based on Stable Diffusion v1.5
+### 2. 📹 智能人脸识别
+基于 OpenCV + WebRTC 的实时视频处理系统
+- 👤 **实时检测**：自动识别画面中的多个人脸
+- 🎭 **掉落特效**：检测到的人脸会复制并从顶部掉落
+- 🏗️ **物理模拟**：真实的重力、弹跳、摩擦效果
+- 📚 **垂直堆叠**：掉落的人脸可以像积木一样层层堆叠
+- ⏱️ **10秒消失**：每个掉落人脸显示倒计时，10秒后自动清除
+- 🎨 **自定义设置**：可调节检测框颜色、灵敏度、掉落速度
 
-#### 📋 Feature Highlights
-- **🎨 Creative Generation**: Generate high-quality artistic images from text descriptions
-- **🌍 Multi-language Support**: Support for both Chinese and English prompts
-- **⚙️ Adjustable Parameters**: Customize image size, inference steps, guidance scale
-- **💾 Easy Saving**: One-click download of generated artworks
-- **🚀 GPU Acceleration**: CUDA acceleration support for faster generation
-
-#### 🎮 Usage Instructions
-
-1. **Launch Feature**
-   ```
-   📍 Navigation → Select "AI Image Generator"
-   ```
-
-2. **Input Creativity**
-   ```
-   ✏️ Enter descriptive text in the input box
-   Examples: "A unicorn running on a rainbow bridge"
-            "A cute robot playing with children in a park"
-   ```
-
-3. **Adjust Generation Parameters**
-   ```
-   📐 Image Size: 512x512 / 768x768 / 1024x1024
-   🔢 Inference Steps: 20-50 (more steps = better quality, longer time)
-   📏 Guidance Scale: 7.5-15 (higher values = closer to description)
-   ```
-
-4. **Start Generation**
-   ```
-   🎯 Click "Generate Image" button
-   ⏳ Wait 10-30 seconds for processing
-   📥 Click "Download Image" to save artwork
-   ```
+### 3. 🐟 FishJump 声控游戏
+麦克风声音控制的跳跃类游戏
+- 🎤 **声音控制**：通过麦克风声音控制小鱼跳跃
+- 📢 **音量响应**：声音越大，跳得越高
+- 🦈 **躲避障碍**：避开红色食人鱼障碍物
+- 🏆 **记录保存**：自动保存最高分记录
+- 🎮 **独立窗口**：游戏在独立Pygame窗口运行
 
 ---
 
-### 🎭 Feature 2: Smart Face Recognition & Interactive System
+## 🚀 快速开始
 
-**Technical Core**: OpenCV Face Detection + Custom Physics Engine + WebRTC Real-time Video Stream
-
-#### 🌟 Innovative Features
-- **👤 Multi-face Detection**: Real-time recognition of multiple faces in the frame
-- **🎪 Gravity Falling Effect**: Detected faces are copied and fall from the top
-- **🏗️ Vertical Stacking System**: Falling faces stack like building blocks layer by layer
-- **⏰ 10-second Survival Mechanism**: Falling faces show countdown and disappear after 10 seconds
-- **🎯 Physics Simulation**: Realistic simulation of gravity, bouncing, and friction
-- **🎨 Visual Feedback**: Green detection boxes and dynamic effect indicators
-
-#### 🕹️ Usage Instructions
-
-1. **Activate Camera**
-   ```
-   📍 Navigation → Select "Camera Face Detection"
-   📷 Click "Start" button to activate camera
-   ✅ Allow browser access to camera permissions
-   ```
-
-2. **Adjust Detection Parameters**
-   ```
-   🎚️ Detection Sensitivity: Slider to adjust recognition accuracy
-   🎪 Falling Effect: Toggle to enable/disable falling animation
-   ⚡ Falling Speed: Adjust the speed of face descent
-   🎨 Visual Settings: Customize detection box color and transparency
-   ```
-
-3. **Experience Interactive Effects**
-   ```
-   👤 Single Person Mode:
-      - Face the camera and observe green detection box
-      - Detected faces automatically copy and fall
-      - Falling faces bounce on the ground and stop
-
-   👥 Multi-person Mode:
-      - Multiple people can be detected simultaneously
-      - Each person's face falls and stacks separately
-      - Forms interesting face tower structures
-   ```
-
-4. **Advanced Interactive Tips**
-   ```
-   🎯 Create Stacking Effects:
-      - Quickly enter/exit frame to trigger multiple detections
-      - Observe vertical stacking physics effects
-      - Watch 10-second countdown cleanup effects
-
-   🎪 Debugging & Optimization:
-      - Adjust lighting for clear detection
-      - Maintain appropriate distance for better recognition
-      - Test detection range from different angles
-   ```
-
----
-
-## 🔧 FunnyWebsite Technical Architecture
-
-### 🏗️ System Components
-```
-FunnyWebsite Architecture:
-┌─────────────────────────────────────────┐
-│            Frontend Interface Layer      │
-├─────────────────────────────────────────┤
-│  Streamlit Web UI + Bilingual System    │
-└─────────────────────────────────────────┘
-          ↓                    ↓
-┌──────────────────┐  ┌──────────────────┐
-│  AI Image Module │  │ Face Detection   │
-├──────────────────┤  ├──────────────────┤
-│• Stable Diffusion│  │• OpenCV Detection│
-│• Model Loading   │  │• WebRTC Stream   │
-│• Parameter Control│  │• Physics Engine  │
-│• Image Processing│  │• Collision System│
-└──────────────────┘  └──────────────────┘
-```
-
-### ⚙️ Core Technology Stack
-- **Frontend Framework**: Streamlit (v1.28+)
-- **AI Model**: Stable Diffusion v1.5 + Diffusers
-- **Video Processing**: streamlit-webrtc + WebRTC
-- **Computer Vision**: OpenCV (v4.8+)
-- **Deep Learning**: PyTorch (v2.0+) + CUDA
-- **Physics Engine**: Custom gravity simulation system
-
-An interactive web application integrating **AI Image Generation** and **Real-time Face Detection** functionalities.
-
-## 🌟 Main Features
-
-### 📸 **AI Image Generator**
-- Generate high-quality images using Stable Diffusion v1.5 model
-- Support for Chinese and English prompts
-- Adjustable image dimensions and generation parameters
-- One-click download of generated images
-
-### 🎭 **Smart Camera Face Detection**
-- Real-time face detection and tracking
-- Innovative **Gravity Falling Effect**: Detected faces are copied and fall from the top
-- **Physics Engine**: Realistic gravity, bounce, and friction simulation
-- **Vertical Stacking**: Falling faces can stack like building blocks
-- **10-second Survival Mechanism**: Falling faces automatically disappear after 10 seconds
-- **Multi-face Support**: Simultaneous detection and processing of multiple faces
-
-### 🌐 **Bilingual Interface**
-- Complete Chinese-English interface switching
-- All features support bilingual operation
-
-## 🚀 Quick Start
-
-### Requirements
-
+### 环境要求
 - Python 3.8+
-- Camera device
-- CUDA-compatible GPU (recommended for AI image generation acceleration)
+- 摄像头设备（用于人脸识别）
+- 麦克风设备（用于FishJump游戏）
+- CUDA兼容GPU（可选，用于加速图像生成）
 
-### Installation Steps
+### 安装步骤
 
-1. **Clone Project**
+1. **克隆项目**
    ```bash
    git clone https://github.com/Majiayin1113/Interactive_Ai_website.git
-   cd Interactive_Ai_website/Website1/week05
+   cd Interactive_Ai_website
    ```
 
-2. **Install Dependencies**
+2. **创建虚拟环境（推荐）**
+   
+   Windows PowerShell:
+   ```powershell
+   .\create_venv.ps1 -VenvName .venv
+   .\.venv\Scripts\Activate.ps1
+   ```
+   
+   Linux/macOS:
+   ```bash
+   ./create_venv.sh .venv
+   source .venv/bin/activate
+   ```
+
+3. **安装依赖**
    ```bash
    pip install -r requirements.txt
-   pip install streamlit-webrtc av
    ```
 
-3. **Run Application**
+4. **运行应用**
    ```bash
-   streamlit run FunnyWebsite.py
+   streamlit run Website1/week05/FunnyWebsite.py
    ```
 
-4. **Access Application**
-   - Open in browser: `http://localhost:8501`
+5. **访问应用**
+   - 浏览器自动打开，或手动访问：`http://localhost:8501`
 
-## 📋 Dependencies
+---
 
-### Core Dependencies
+## 🎮 使用指南
+
+### AI图像生成器
+1. 点击侧边栏"🎨 图像生成"
+2. 在文本框输入描述或选择预设模板
+3. 调整图像尺寸和生成步数
+4. 点击"生成图像"按钮
+5. 等待生成完成（10-30秒）
+6. 下载或重新生成
+
+### 人脸识别摄像头
+1. 点击侧边栏"📹 人脸识别"
+2. 点击"START"按钮启动摄像头
+3. 允许浏览器访问摄像头权限
+4. 调整检测灵敏度和掉落效果
+5. 面向摄像头观察实时检测和掉落效果
+6. 多人同时检测可观察堆叠效果
+
+### FishJump游戏
+1. 点击侧边栏"🐟 FishJump"
+2. 查看游戏说明和操作方式
+3. 点击"启动游戏"按钮
+4. 游戏在新窗口启动
+5. 对着麦克风发声控制小鱼跳跃
+6. 躲避障碍，获取高分
+
+---
+
+## 📦 核心依赖
+
 ```
-streamlit>=1.28.0          # Web application framework
-streamlit-webrtc>=0.45.0   # Real-time video stream processing
-diffusers>=0.21.0          # Stable Diffusion models
-torch>=2.0.0               # Deep learning framework
-opencv-python>=4.8.0       # Computer vision library
-transformers>=4.30.0       # Transformer models
-accelerate>=0.20.0         # Model acceleration
-av>=10.0.0                 # Audio/video processing
-```
-
-### Optional Dependencies (GPU Acceleration)
-```
-torch[cuda]                # CUDA support
-xformers                   # Memory optimization
-```
-
-## 🎮 Usage Guide
-
-### AI Image Generator Usage
-
-1. **Select Feature**
-   - Click "AI Image Generator" in the sidebar
-
-2. **Input Prompts**
-   - Enter description in text box (supports Chinese and English)
-   - Example: "A cute puppy playing in a garden"
-
-3. **Adjust Parameters**
-   - **Image Size**: Choose generation image resolution
-   - **Inference Steps**: Control generation quality (more steps = better quality but slower)
-   - **Guidance Scale**: Control adherence to prompts
-
-4. **Generate Image**
-   - Click "Generate Image" button
-   - Wait for processing completion (usually 10-30 seconds)
-
-### Face Detection Camera Usage
-
-1. **Select Feature**
-   - Click "Camera Face Detection" in the sidebar
-
-2. **Start Camera**
-   - Click "Start" button
-   - Allow browser camera permissions
-
-3. **Adjust Detection Parameters**
-   - **Detection Sensitivity**: Adjust face detection sensitivity
-   - **Falling Effect Toggle**: Enable/disable face falling animation
-   - **Falling Speed**: Control face falling speed
-
-4. **Experience Interactive Effects**
-   - Face the camera and observe green detection boxes
-   - With falling effects enabled, detected faces will be copied and fall
-   - Multiple people can see stacking effects simultaneously
-
-## 🎯 Feature Details
-
-### Gravity Physics System
-- **Realistic Gravity**: Falling faces accelerate downward under gravity
-- **Bounce Effects**: Natural bouncing when hitting ground or other faces
-- **Friction**: Ground friction gradually stops face movement
-- **Collision Detection**: Collision and stacking effects between faces
-
-### Vertical Stacking Mechanism
-- **Smart Detection**: Automatically detect horizontal overlap between faces
-- **Layer Stacking**: Later-falling faces stop above earlier-landed faces
-- **Stable Structure**: Stacked faces form stable tower-like structures
-- **Overlap Prevention**: Avoid face overlap on the same layer
-
-### Survival Time System
-- **10-second Countdown**: Each falling face shows remaining survival time
-- **Fade Effects**: Borders gradually become transparent as disappearance approaches
-- **Automatic Cleanup**: Automatically removed from screen after timeout
-
-## 🔧 Advanced Configuration
-
-### Performance Optimization Settings
-
-```python
-# Adjustable parameters in code
-face_detection_settings = {
-    'enabled': True,
-    'color': (0, 255, 0),        # Detection box color
-    'confidence': 0.3,           # Detection confidence
-    'falling_effect': True,      # Falling effect toggle
-    'falling_speed': 3.0         # Falling speed
-}
-
-# Physics engine parameters
-gravity = 0.5           # Gravity acceleration
-bounce_factor = 0.3     # Bounce coefficient
-friction = 0.95         # Friction coefficient
-lifetime = 10.0         # Face survival time (seconds)
+streamlit>=1.28.0          # Web应用框架
+streamlit-webrtc>=0.45.0   # 实时视频流处理
+diffusers>=0.21.0          # Stable Diffusion模型
+torch>=2.0.0               # 深度学习框架
+opencv-python>=4.8.0       # 计算机视觉库
+transformers>=4.30.0       # Transformer模型
+pygame>=2.5.0              # 游戏开发库
+pyaudio>=0.2.13            # 音频处理
 ```
 
-### GPU Acceleration Configuration
+---
 
-If you have an NVIDIA GPU, you can enable CUDA acceleration with:
+## 🛠️ 技术架构
 
-```bash
-# Install CUDA version of PyTorch
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+```
+FunnyWebsite
+├── Streamlit前端框架
+│   ├── 多页面导航系统
+│   ├── 中英文双语切换
+│   └── 响应式布局设计
+│
+├── AI图像生成模块
+│   ├── Stable Diffusion v1.5
+│   ├── Diffusers Pipeline
+│   └── PyTorch + CUDA
+│
+├── 人脸识别模块
+│   ├── OpenCV人脸检测
+│   ├── WebRTC视频流
+│   ├── 自定义物理引擎
+│   └── 碰撞堆叠系统
+│
+└── 声控游戏模块
+    ├── PyAudio音频采集
+    ├── Pygame游戏引擎
+    └── 实时音量分析
 ```
 
-## 📂 Project Structure
+---
+
+## 🐛 常见问题
+
+### 摄像头无法启动
+- 检查浏览器摄像头权限
+- 确认其他程序未占用摄像头
+- 刷新页面重新授权
+
+### 图像生成速度慢
+- 确认是否启用GPU加速
+- 减少生成步数提高速度
+- 降低图像分辨率
+
+### 游戏无法启动
+- 检查是否安装PyAudio和Pygame
+- 确认麦克风权限已授予
+- 查看终端错误信息
+
+---
+
+## 📂 项目结构
 
 ```
 Interactive_Ai_website/
-├── README.md                          # Project documentation
+├── README.md                    # 项目说明文档
+├── requirements.txt             # Python依赖列表
+├── create_venv.ps1             # Windows虚拟环境创建脚本
+├── create_venv.sh              # Linux/Mac虚拟环境创建脚本
+├── voice_parkour.py            # FishJump游戏主程序
+├── highscore.txt               # 游戏最高分记录
+│
 ├── Website1/week05/
-│   ├── FunnyWebsite.py               # Main application
-│   ├── streamlit_image_generator.py   # Image generator module
-│   ├── requirements.txt               # Python dependencies
-│   ├── camera_face_detection.py       # Face detection module
-│   ├── simple_camera_test.py         # Camera testing
-│   └── generate_puppy.py             # Image generation example
-└── Game/                             # Game-related files
+│   ├── FunnyWebsite.py         # 主应用程序
+│   ├── requirements.txt        # 模块依赖
+│   └── ...                     # 其他辅助文件
+│
+├── Game/                       # 游戏相关文件
+└── Sound/                      # 音频处理文件
 ```
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-1. **Camera Won't Start**
-   - Ensure browser has granted camera permissions
-   - Check if other programs are using the camera
-   - Try refreshing the page to re-authorize
-
-2. **Slow Image Generation**
-   - Confirm if GPU acceleration is enabled
-   - Reduce inference steps to improve speed
-   - Lower image resolution
-
-3. **Inaccurate Face Detection**
-   - Adjust detection sensitivity parameters
-   - Ensure sufficient lighting
-   - Keep faces clearly visible
-
-4. **Abnormal Falling Effects**
-   - Check if browser supports WebRTC
-   - Try reducing falling speed parameters
-   - Restart the application
-
-### Performance Optimization Recommendations
-
-- **Hardware Requirements**: GPU recommended for AI image generation
-- **Memory Management**: Restart application after extended use to free memory
-- **Network Requirements**: Initial run requires downloading model files (~4GB)
-
-## 🔄 Change Log
-
-### v2.0.0 (2025-10-02)
-- ✨ Added vertical stacking functionality
-- 🔧 Optimized physics engine stability
-- 🐛 Fixed face immediate disappearance issue
-- 📱 Improved mobile compatibility
-
-### v1.5.0 (2025-10-01)
-- ✨ Added gravity physics system
-- ✨ Implemented 10-second survival mechanism
-- 🎨 Optimized user interface
-
-### v1.0.0 (2025-09-30)
-- 🎉 Initial release
-- ✨ AI image generation functionality
-- ✨ Basic face detection
-- 🌐 Bilingual interface support
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-
-## 🤝 Contributing
-
-Issues and Pull Requests are welcome!
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📧 Contact
-
-- Project Maintainer: Majiayin1113
-- GitHub: [https://github.com/Majiayin1113](https://github.com/Majiayin1113)
-- Project Link: [https://github.com/Majiayin1113/Interactive_Ai_website](https://github.com/Majiayin1113/Interactive_Ai_website)
 
 ---
 
-## 🧰 Environment (新增)
+## 🌐 语言支持
 
-本仓库已添加用于快速创建 Python 虚拟环境的脚本：
+- 🇨🇳 **简体中文**：完整的中文界面和提示词支持
+- 🇺🇸 **English**：Complete English interface and prompt support
 
-- `create_venv.ps1`（Windows PowerShell）
-- `create_venv.sh`（Unix / macOS bash）
-- 顶层 `requirements.txt` 已合并自项目子目录并去重，用于统一安装依赖。
+可在侧边栏随时切换语言，所有功能均支持双语操作。
 
-使用示例（Windows PowerShell）：
+---
 
-```powershell
-# 在仓库根目录运行（需要 PowerShell）：
-.\create_venv.ps1 -VenvName .venv
-# 然后在当前会话激活虚拟环境：
-& .\.venv\Scripts\Activate.ps1
-```
+## 📝 开发日志
 
-使用示例（Unix / macOS）：
+### v2.0.0 (2025-10-16)
+- ✨ 新增FishJump声控游戏模块
+- ✨ 完善三模块导航系统
+- 🎨 优化UI界面和图标显示
+- 🌐 增强双语支持
 
-```bash
-# 在仓库根目录运行：
-./create_venv.sh .venv
-# 激活：
-source .venv/bin/activate
-```
+### v1.5.0 (2025-10-02)
+- ✨ 添加人脸垂直堆叠功能
+- 🔧 优化物理引擎稳定性
+- 📱 改进移动端兼容性
 
-安装完成后即可运行项目中的示例或 Streamlit 应用，例如：
+### v1.0.0 (2025-09-30)
+- 🎉 初始版本发布
+- ✨ AI图像生成功能
+- ✨ 基础人脸检测
 
-```bash
-streamlit run Website1/week05/FunnyWebsite.py
-```
+---
 
+## 📄 许可证
 
-⭐ If this project helps you, please give us a star!
+本项目采用 MIT 许可证 - 详见 [LICENSE](LICENSE) 文件
+
+---
+
+## 👥 贡献
+
+欢迎提交 Issue 和 Pull Request！
+
+1. Fork 本项目
+2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 开启 Pull Request
+
+---
+
+## 📧 联系方式
+
+- 项目维护者：Majiayin1113
+- GitHub：[https://github.com/Majiayin1113](https://github.com/Majiayin1113)
+- 项目链接：[https://github.com/Majiayin1113/Interactive_Ai_website](https://github.com/Majiayin1113/Interactive_Ai_website)
+
+---
+
+⭐ 如果这个项目对你有帮助，请给我们一个星标！
