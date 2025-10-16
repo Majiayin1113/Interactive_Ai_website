@@ -65,8 +65,31 @@ LANGUAGES = {
         'navigation': '🧭 导航',
         'page_image_gen': '🎨 图像生成器',
         'page_camera': '📹 摄像头识别',
+        'page_fishjump': '🐟 FishJump游戏',
         'nav_image_gen': '图像生成',
-        'nav_camera': '人脸识别'
+        'nav_camera': '人脸识别',
+        'nav_fishjump': 'FishJump',
+        'fishjump_title': '🐟 FishJump - 声控跳跃游戏',
+        'fishjump_desc': '使用麦克风控制小鱼跳跃，躲避障碍物！',
+        'fishjump_instruction': '游戏说明',
+        'fishjump_instruction_1': '🎤 游戏通过麦克风声音控制',
+        'fishjump_instruction_2': '🐟 小鱼会自动向前游动',
+        'fishjump_instruction_3': '📢 发出声音让小鱼跳跃',
+        'fishjump_instruction_4': '🔊 声音越大，跳得越高',
+        'fishjump_instruction_5': '⚠️ 躲避红色的食人鱼障碍物',
+        'fishjump_instruction_6': '🏆 尽可能获得更高分数',
+        'fishjump_start': '🎮 启动游戏',
+        'fishjump_note': '📝 注意：游戏将在新窗口中启动',
+        'fishjump_controls': '🎮 控制方式',
+        'fishjump_tips': '💡 游戏提示',
+        'fishjump_tip_1': '• 保持麦克风在合适的距离',
+        'fishjump_tip_2': '• 可以用口哨、拍手等声音控制',
+        'fishjump_tip_3': '• 声音需要达到一定音量才能跳跃',
+        'fishjump_tip_4': '• 分数会自动保存为最高分',
+        'fishjump_requirements': '⚙️ 系统要求',
+        'fishjump_req_1': '✓ 需要麦克风权限',
+        'fishjump_req_2': '✓ 需要安装 PyAudio',
+        'fishjump_req_3': '✓ 需要安装 Pygame'
     },
     'en': {
         'page_title': 'AI Smart Tools',
@@ -123,8 +146,31 @@ LANGUAGES = {
         'navigation': '🧭 Navigation',
         'page_image_gen': '🎨 Image Generator',
         'page_camera': '📹 Camera Detection',
+        'page_fishjump': '🐟 FishJump Game',
         'nav_image_gen': 'Image Generation',
-        'nav_camera': 'Face Recognition'
+        'nav_camera': 'Face Recognition',
+        'nav_fishjump': 'FishJump',
+        'fishjump_title': '🐟 FishJump - Voice Controlled Jump Game',
+        'fishjump_desc': 'Control the fish to jump with your microphone and avoid obstacles!',
+        'fishjump_instruction': 'Game Instructions',
+        'fishjump_instruction_1': '🎤 Game is controlled by microphone sounds',
+        'fishjump_instruction_2': '🐟 The fish swims forward automatically',
+        'fishjump_instruction_3': '📢 Make sounds to make the fish jump',
+        'fishjump_instruction_4': '🔊 Louder sounds = higher jumps',
+        'fishjump_instruction_5': '⚠️ Avoid red piranha obstacles',
+        'fishjump_instruction_6': '🏆 Try to get the highest score possible',
+        'fishjump_start': '🎮 Start Game',
+        'fishjump_note': '📝 Note: Game will launch in a new window',
+        'fishjump_controls': '🎮 Controls',
+        'fishjump_tips': '💡 Game Tips',
+        'fishjump_tip_1': '• Keep microphone at appropriate distance',
+        'fishjump_tip_2': '• Use whistles, claps, or other sounds',
+        'fishjump_tip_3': '• Sound needs to reach certain volume to jump',
+        'fishjump_tip_4': '• Score is automatically saved as high score',
+        'fishjump_requirements': '⚙️ System Requirements',
+        'fishjump_req_1': '✓ Microphone permission required',
+        'fishjump_req_2': '✓ PyAudio must be installed',
+        'fishjump_req_3': '✓ Pygame must be installed'
     }
 }
 
@@ -159,6 +205,10 @@ if 'language' not in st.session_state:
 # 初始化页面选择
 if 'current_page' not in st.session_state:
     st.session_state.current_page = 'image_gen'
+
+# 初始化游戏运行状态
+if 'game_running' not in st.session_state:
+    st.session_state.game_running = False
 
 # 初始化摄像头相关状态
 if 'face_count' not in st.session_state:
@@ -478,6 +528,13 @@ def main():
             st.session_state.current_page = 'camera'
             st.rerun()
         
+        # FishJump游戏按钮
+        if st.button(get_text('nav_fishjump', st.session_state.language),
+                    type="primary" if st.session_state.current_page == 'fishjump' else "secondary",
+                    use_container_width=True):
+            st.session_state.current_page = 'fishjump'
+            st.rerun()
+        
         st.markdown("---")
     
     # 根据当前页面显示内容
@@ -485,6 +542,8 @@ def main():
         image_generator_page()
     elif st.session_state.current_page == 'camera':
         camera_page()
+    elif st.session_state.current_page == 'fishjump':
+        fishjump_page()
 
 def image_generator_page():
     # 左侧边栏 - 图像生成设置
@@ -835,30 +894,129 @@ def camera_page():
             5. Adjust falling speed and detection sensitivity
             """)
             
+                        
             st.info("🔒 Privacy Notice: Video stream is processed locally only, not uploaded to server")
+
+def fishjump_page():
+    """FishJump游戏页面"""
+    import subprocess
+    import sys
+    
+    # 主标题
+    st.title(get_text('fishjump_title', st.session_state.language))
+    st.markdown(get_text('fishjump_desc', st.session_state.language))
+    st.markdown("---")
+    
+    # 创建三列布局
+    col1, col2, col3 = st.columns([1, 1, 1])
+    
+    with col1:
+        # 游戏说明
+        st.subheader(get_text('fishjump_instruction', st.session_state.language))
+        st.markdown(f"""
+        {get_text('fishjump_instruction_1', st.session_state.language)}
         
-        # 实时统计显示
-        if face_detection_enabled:
-            status_text = "人脸检测: 开启" if st.session_state.language == 'zh' else "Face Detection: ON"
-            st.success(f"✅ {status_text}")
-        else:
-            status_text = "人脸检测: 关闭" if st.session_state.language == 'zh' else "Face Detection: OFF"
-            st.warning(f"⚠️ {status_text}")
-            
-        if falling_effect_enabled:
-            falling_text = "掉落效果: 开启" if st.session_state.language == 'zh' else "Falling Effect: ON"
-            st.success(f"🎭 {falling_text}")
-            
-            # 显示当前掉落中的人脸数量
+        {get_text('fishjump_instruction_2', st.session_state.language)}
+        
+        {get_text('fishjump_instruction_3', st.session_state.language)}
+        
+        {get_text('fishjump_instruction_4', st.session_state.language)}
+        
+        {get_text('fishjump_instruction_5', st.session_state.language)}
+        
+        {get_text('fishjump_instruction_6', st.session_state.language)}
+        """)
+    
+    with col2:
+        # 控制方式和提示
+        st.subheader(get_text('fishjump_tips', st.session_state.language))
+        st.markdown(f"""
+        {get_text('fishjump_tip_1', st.session_state.language)}
+        
+        {get_text('fishjump_tip_2', st.session_state.language)}
+        
+        {get_text('fishjump_tip_3', st.session_state.language)}
+        
+        {get_text('fishjump_tip_4', st.session_state.language)}
+        """)
+        
+        # 显示最高分
+        HS_PATH = 'highscore.txt'
+        try:
+            with open(HS_PATH, 'r', encoding='utf-8') as f:
+                high_score = int(f.read().strip() or '0')
+                st.metric("🏆 " + ("最高分" if st.session_state.language == 'zh' else "High Score"), high_score)
+        except Exception:
+            st.metric("🏆 " + ("最高分" if st.session_state.language == 'zh' else "High Score"), 0)
+    
+    with col3:
+        # 系统要求
+        st.subheader(get_text('fishjump_requirements', st.session_state.language))
+        st.markdown(f"""
+        {get_text('fishjump_req_1', st.session_state.language)}
+        
+        {get_text('fishjump_req_2', st.session_state.language)}
+        
+        {get_text('fishjump_req_3', st.session_state.language)}
+        """)
+        
+        st.markdown("---")
+        
+        # 启动游戏按钮
+        if st.button(get_text('fishjump_start', st.session_state.language), 
+                    type="primary", 
+                    use_container_width=True):
             try:
-                falling_count = len(falling_faces) if 'falling_faces' in globals() else 0
-                count_text = f"掉落中: {falling_count} 个人脸" if st.session_state.language == 'zh' else f"Falling: {falling_count} faces"
-                st.info(f"📈 {count_text}")
-            except:
-                pass
-        else:
-            falling_text = "掉落效果: 关闭" if st.session_state.language == 'zh' else "Falling Effect: OFF"
-            st.info(f"🎭 {falling_text}")
+                # 获取voice_parkour.py的路径
+                parkour_path = r'f:\PolyU\Sem1\5913Programming\Interactive_Website\Interactive_Ai_website-3\voice_parkour.py'
+                
+                # 在新进程中启动游戏
+                subprocess.Popen([sys.executable, parkour_path], 
+                               creationflags=subprocess.CREATE_NEW_CONSOLE if sys.platform == 'win32' else 0)
+                
+                st.success("🎮 " + ("游戏已启动！请查看新窗口。" if st.session_state.language == 'zh' else "Game started! Check the new window."))
+            except Exception as e:
+                st.error(f"❌ " + ("启动失败：" if st.session_state.language == 'zh' else "Failed to start: ") + str(e))
+        
+        st.info(get_text('fishjump_note', st.session_state.language))
+    
+    st.markdown("---")
+    
+    # 游戏预览图片区域
+    st.subheader("🖼️ " + ("游戏预览" if st.session_state.language == 'zh' else "Game Preview"))
+    
+    preview_col1, preview_col2 = st.columns(2)
+    
+    with preview_col1:
+        st.markdown("""
+        ### 🐟 游戏特色
+        - **声控操作**：使用麦克风声音控制跳跃
+        - **动态难度**：随机生成的障碍物
+        - **实时反馈**：显示音量和分数
+        - **最高分记录**：自动保存你的最佳成绩
+        """ if st.session_state.language == 'zh' else """
+        ### 🐟 Game Features
+        - **Voice Control**: Use microphone to control jumps
+        - **Dynamic Difficulty**: Randomly generated obstacles
+        - **Real-time Feedback**: Display volume and score
+        - **High Score**: Automatically saves your best score
+        """)
+    
+    with preview_col2:
+        st.markdown("""
+        ### 🎮 游戏画面
+        - 🌊 美丽的波浪背景
+        - 🐟 可爱的小鱼角色
+        - 🦈 危险的食人鱼障碍
+        - 📊 实时音量显示
+        """ if st.session_state.language == 'zh' else """
+        ### 🎮 Game Graphics
+        - 🌊 Beautiful wave background
+        - 🐟 Cute fish character
+        - 🦈 Dangerous piranha obstacles
+        - 📊 Real-time volume display
+        """)
 
 if __name__ == "__main__":
     main()
+
