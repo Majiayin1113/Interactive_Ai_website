@@ -1,5 +1,5 @@
 # 🎨 FunnyWebsite - 多功能AI互动网站
-
+只需要打开FunnyWebsite就可以看到所有内容。
 ## 📖 项目简介
 
 **FunnyWebsite** 是一个集成了三大核心功能的AI互动网站，包括AI图像生成、实时人脸识别和声控游戏。采用Streamlit框架构建，支持中英文双语界面。
