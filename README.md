@@ -26,6 +26,7 @@ Real-time video processing system based on OpenCV + WebRTC
 - 📚 **Vertical Stacking**: Falling faces can stack layer by layer like building blocks
 - ⏱️ **10-Second Disappearance**: Each falling face displays countdown and auto-clears after 10 seconds
 - 🎨 **Custom Settings**: Adjustable detection box color, sensitivity, and falling speed
+<img width="2559" height="1343" alt="image" src="https://github.com/user-attachments/assets/3e56dfd2-6d5d-462a-b492-21e7bc4509e8" />
 
 ### 3. 🐟 FishJump Voice-Controlled Game
 Jump game controlled by microphone sound
@@ -34,6 +35,7 @@ Jump game controlled by microphone sound
 - 🦈 **Avoid Obstacles**: Dodge red piranha obstacles
 - 🏆 **Record Saving**: Automatically save high score records
 - 🎮 **Independent Window**: Game runs in separate Pygame window
+<img width="1202" height="646" alt="image" src="https://github.com/user-attachments/assets/64d5bd2b-4a14-40ad-a947-a9b6cccee50b" />
 
 ---
 
